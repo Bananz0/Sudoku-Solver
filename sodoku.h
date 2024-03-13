@@ -13,8 +13,10 @@ public:
     Sodoku(int row_n, int col_n);
 
     ~Sodoku();
-    void InitializeGame();
-
+    void InitializeGrid();
+    void PopulateGrid(int **GridIn);
+    void CalculateGame();
 };
+
 
 #endif // SODOKU_H
