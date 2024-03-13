@@ -15,7 +15,7 @@ public:
     ~Sodoku();
     void InitializeGrid();
     void PopulateGrid(int **GridIn);
-    void CalculateGame();
+    bool CheckGame();
 };
 
 
