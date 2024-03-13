@@ -13,3 +13,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+bool gameStarted= false;
+void MainWindow::on_StartGame_clicked()
+{
+    gameStarted = true;
+    ui->gameStatus->setText("The game has started...");
+
+}
+

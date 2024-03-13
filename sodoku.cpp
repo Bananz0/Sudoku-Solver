@@ -1,101 +1,60 @@
-#include "sodoku.h"
+#include "Sodoku.h"
 
-bool CheckSubGrid(std::vector<std::vector<int>> &sodokuGrid,int GridNumber);
-bool CheckLines(std::vector<std::vector<int>> &sodokuGrid);
+bool CheckSubGrid(std::vector<std::vector<int>>& sodokuGrid, int GridNumber);
+bool CheckLines(std::vector<std::vector<int>>& sodokuGrid);
 
-Sodoku::Sodoku() : rows(9), cols(9) {}
+Sodoku::Sodoku() : rows(9), cols(9) {};
+Sodoku::Sodoku(int row_n, int col_n) : rows(row_n), cols(col_n) {};
+Sodoku::~Sodoku() {};
 
-Sodoku::Sodoku(int row_n, int col_n): rows(row_n), cols(col_n){};
-
-Sodoku::~Sodoku(){}
-
-void Sodoku::InitializeGrid(){
-
-    for (int i = 0; i < rows ; i++){
-
-        for (int j = 0; j < rows; j++){
-
-            sodokuGrid[i][j] = 0;
-
-        }
-
-    }
-
+void Sodoku::InitializeGrid() {
+    sodokuGrid.resize(rows, std::vector<int>(cols, 0));
 }
-
-void Sodoku::PopulateGrid(int **GridIn){
-
-    for (int i = 0; i < rows ; i++){
-
-        for (int j = 0; j < rows; j++){
-
+void Sodoku::PopulateGrid(std::vector<std::vector<int>> &GridIn) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < rows; j++) {
             sodokuGrid[i][j] = GridIn[i][j];
-
         }
-
     }
-
 }
-
-bool Sodoku::CheckGame(){
-
+bool Sodoku::CheckGame() {
     int check = 0;
     int check2 = 0;
-
-    for (int i = 0; i< 9; i++){
-
-        check += CheckSubGrid(sodokuGrid,i);
-
+    for (int i = 0; i < 9; i++) {
+        check += CheckSubGrid(sodokuGrid, i);
     }
-
     check2 = CheckLines(sodokuGrid);
-
     //Check for both lines and subgrids
-
-    return (check+check2)==10;
-
+    return (check + check2) == 10;
 }
-
-bool CheckSubGrid(std::vector<std::vector<int>> &sodokuGrid,int GridNumber){
-
+bool CheckSubGrid(std::vector<std::vector<int>>& sodokuGrid, int GridNumber) {
     int sum = 0;
-
-    int StartColumn = (GridNumber/3)*3;
-
-    int StartRow = (GridNumber%3)*3;
-
-    for (int i = StartColumn; i < StartColumn + 3; i++){
-
-        for (int j = StartRow; j < StartRow +3; j++){
-
+    int StartColumn = (GridNumber / 3) * 3;
+    int StartRow = (GridNumber % 3) * 3;
+    for (int i = StartColumn; i < StartColumn + 3; i++) {
+        for (int j = StartRow; j < StartRow + 3; j++) {
             sum += sodokuGrid[i][j];
-
         }
-
     }
-
     return sum == 45;
-
 }
-
-bool CheckLines(std::vector<std::vector<int>> &sodokuGrid){
-
+bool CheckLines(std::vector<std::vector<int>>& sodokuGrid) {
     int sum_horizontal = 0;
-
     int sum_vertical = 0;
 
-    for (int j = 0; j<9; j++){
-
-        for (int i = 0; i<9; i++){
-
+    for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < 9; i++) {
             sum_horizontal += sodokuGrid[i][j];
-
             sum_vertical += sodokuGrid[j][i];
-
         }
-
     }
-
-    return (sum_horizontal+sum_vertical) == 405;
-
+    return (sum_horizontal + sum_vertical) == 405 * 2;
+}
+void Sodoku::PrintGrid() {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < rows; j++) {
+            std::cout << sodokuGrid[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
 }
