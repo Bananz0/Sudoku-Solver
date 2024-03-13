@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    sodoku.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    sodoku.h
 
 FORMS += \
     mainwindow.ui
