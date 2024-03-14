@@ -33,10 +33,9 @@ void MainWindow::on_openTextFile_clicked()
     }
     QTextStream sodokuTextIn(&sodokuText);
     fileText = sodokuTextIn.readAll();
-    ui->textBrowser->setText(fileText);
 }
 
-void MainWindow::on_OpenFileDialog_clicked()
+void MainWindow::on_openFileDialog_clicked()
 {
     QString sodokuTestAlt =  QFileDialog::getOpenFileName(this, tr("Open File"),
                                                          "/home",
@@ -47,13 +46,12 @@ void MainWindow::on_OpenFileDialog_clicked()
     }
     QTextStream sodokuTextIn(&sodokuText);
     fileText = sodokuTextIn.readAll();
-    ui->textBrowser->setText(fileText);
 
 }
 
-std::vector<std::vector<int>> MainWindow::ParseText(QString& input) {
+QVector<QVector<int>> MainWindow::ParseText(QString& input) {
     //Little help from AI and stack overflow
-    std::vector<std::vector<int>> sodokuGridIn(9, std::vector<int>(9));
+    QVector<QVector<int>> sodokuGridIn(9, QVector<int>(9));
     int idx = 0;
     for (int row = 0; row < 9; row++) {
         for (int col = 0; col < 9; col++) {
@@ -63,8 +61,6 @@ std::vector<std::vector<int>> MainWindow::ParseText(QString& input) {
     }
     return sodokuGridIn;
 }
-
-
 
 void MainWindow::on_checkGame_clicked()
 {

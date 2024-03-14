@@ -1,17 +1,17 @@
 #include <iostream>
 #include "Sodoku.h"
 
-bool CheckSubGrid(std::vector<std::vector<int>>& sodokuGrid, int GridNumber);
-bool CheckLines(std::vector<std::vector<int>>& sodokuGrid);
+bool CheckSubGrid(QVector<QVector<int>>& sodokuGrid, int GridNumber);
+bool CheckLines(QVector<QVector<int>>& sodokuGrid);
 
 Sodoku::Sodoku() : rows(9), cols(9) {};
 Sodoku::Sodoku(int row_n, int col_n) : rows(row_n), cols(col_n) {};
 Sodoku::~Sodoku() {};
 
 void Sodoku::InitializeGrid() {
-    sodokuGrid.resize(rows, std::vector<int>(cols, 0));
+    sodokuGrid.resize(rows, QVector<int>(cols, 0));
 }
-void Sodoku::PopulateGrid(const std::vector<std::vector<int>> &GridIn) {
+void Sodoku::PopulateGrid(const QVector<QVector<int>> &GridIn) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < rows; j++) {
             sodokuGrid[i][j] = GridIn[i][j];
@@ -29,7 +29,7 @@ bool Sodoku::CheckGame() {
     //Check for both lines and subgrids
     return (check + check2) == 10;
 }
-bool CheckSubGrid(std::vector<std::vector<int>>& sodokuGrid, int GridNumber) {
+bool CheckSubGrid(QVector<QVector<int>>& sodokuGrid, int GridNumber) {
     int sum = 0;
     int StartColumn = (GridNumber / 3) * 3;
     int StartRow = (GridNumber % 3) * 3;
@@ -40,7 +40,7 @@ bool CheckSubGrid(std::vector<std::vector<int>>& sodokuGrid, int GridNumber) {
     }
     return sum == 45;
 }
-bool CheckLines(std::vector<std::vector<int>>& sodokuGrid) {
+bool CheckLines(QVector<QVector<int>>& sodokuGrid) {
     int sum_horizontal = 0;
     int sum_vertical = 0;
 

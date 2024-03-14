@@ -4,7 +4,9 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QMessageBox>
+
 #include "sodoku.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,7 +19,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    std::vector<std::vector<int>> ParseText(QString& input);
+    QVector<QVector<int>> ParseText(QString& input);
     Sodoku *s = new Sodoku;
 
 private slots:
@@ -27,9 +29,10 @@ private slots:
 
     void on_openTextFile_clicked();
 
-    void on_OpenFileDialog_clicked();
+    void on_openFileDialog_clicked();
 
     void on_checkGame_clicked();
+
 
 private:
     bool isGameStarted = false;
