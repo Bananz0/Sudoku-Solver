@@ -33,9 +33,8 @@ private slots:
 
 private:
     bool isGameStarted = false;
-
+    bool isGameComplete = false;
     std::string fileText;
-
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

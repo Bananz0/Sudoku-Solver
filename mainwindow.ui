@@ -53,7 +53,7 @@
      <string>Load Game from File</string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="textBrowser">
+   <widget class="QTextEdit" name="textBrowser">
     <property name="geometry">
      <rect>
       <x>250</x>

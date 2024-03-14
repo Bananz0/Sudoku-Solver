@@ -24,6 +24,7 @@ bool Sodoku::CheckGame() {
         check += CheckSubGrid(sodokuGrid, i);
     }
     check2 = CheckLines(sodokuGrid);
+    std::cout << "The game is" << ((check + check2) == 10?" valid ": " invalid") << std::endl;
     //Check for both lines and subgrids
     return (check + check2) == 10;
 }

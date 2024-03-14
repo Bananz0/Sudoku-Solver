@@ -71,6 +71,8 @@ std::vector<std::vector<int>> MainWindow::ParseText(const std::string& input) {
 
 void MainWindow::on_checkGame_clicked()
 {
-
+    if (!isGameComplete){
+        isGameComplete= s->CheckGame();
+    }
 }
 
