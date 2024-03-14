@@ -1,7 +1,6 @@
 #ifndef SODOKU_H
 #define SODOKU_H
 #include <vector>
-#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -16,7 +15,7 @@ public:
     Sodoku(int row_n, int col_n);
     ~Sodoku();
     void InitializeGrid();
-    void PopulateGrid(std::vector<std::vector<int>> &GridIn);
+    void PopulateGrid(const std::vector<std::vector<int>> &GridIn);
     void PrintGrid();
     bool CheckGame();
 };

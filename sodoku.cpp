@@ -10,7 +10,7 @@ Sodoku::~Sodoku() {};
 void Sodoku::InitializeGrid() {
     sodokuGrid.resize(rows, std::vector<int>(cols, 0));
 }
-void Sodoku::PopulateGrid(std::vector<std::vector<int>> &GridIn) {
+void Sodoku::PopulateGrid(const std::vector<std::vector<int>> &GridIn) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < rows; j++) {
             sodokuGrid[i][j] = GridIn[i][j];

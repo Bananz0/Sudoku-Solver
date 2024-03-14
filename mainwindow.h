@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
+#include <QMessageBox>
+#include "sodoku.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,11 +17,25 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    std::vector<std::vector<int>> ParseText(const std::string& input);
+    Sodoku *s = new Sodoku;
 
 private slots:
+
+
     void on_StartGame_clicked();
 
+    void on_openTextFile_clicked();
+
+    void on_OpenFileDialog_clicked();
+
+    void on_checkGame_clicked();
+
 private:
+    bool isGameStarted = false;
+
+    std::string fileText;
+
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
