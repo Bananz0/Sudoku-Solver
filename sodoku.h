@@ -14,6 +14,8 @@ public:
     ~Sodoku();
     void InitializeGrid();
     void PopulateGrid(const QVector<QVector<int>> &GridIn);
+    QVector<QVector<int>> getGrid();
+    int getValue(int a,int b);
     void PrintGrid();
     bool CheckGame();
 };

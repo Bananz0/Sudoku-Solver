@@ -60,3 +60,11 @@ void Sodoku::PrintGrid() {
         std::cout << std::endl;
     }
 }
+
+QVector<QVector<int>> Sodoku::getGrid() {
+    return sodokuGrid;
+}
+
+int Sodoku::getValue(int a, int b){
+    return sodokuGrid[a][b];
+}

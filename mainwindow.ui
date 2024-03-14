@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>724</width>
+    <width>414</width>
     <height>606</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <widget class="QPushButton" name="StartGame">
     <property name="geometry">
      <rect>
-      <x>80</x>
+      <x>0</x>
       <y>520</y>
       <width>80</width>
       <height>24</height>
@@ -30,7 +30,7 @@
    <widget class="QPushButton" name="openTextFile">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>80</x>
       <y>520</y>
       <width>121</width>
       <height>24</height>
@@ -43,7 +43,7 @@
    <widget class="QPushButton" name="openFileDialog">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>200</x>
       <y>520</y>
       <width>121</width>
       <height>24</height>
@@ -56,7 +56,7 @@
    <widget class="QPushButton" name="checkGame">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>320</x>
       <y>520</y>
       <width>80</width>
       <height>24</height>
@@ -66,6 +66,41 @@
      <string>Check Game</string>
     </property>
    </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>414</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menunigag">
+    <property name="title">
+     <string>Start</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuLoad_from_Text">
+    <property name="title">
+     <string>Load Sample</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuLoad_from_File">
+    <property name="title">
+     <string>Load from File</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuCheck_Game">
+    <property name="title">
+     <string>Check Game</string>
+    </property>
+   </widget>
+   <addaction name="menunigag"/>
+   <addaction name="menuLoad_from_Text"/>
+   <addaction name="menuLoad_from_File"/>
+   <addaction name="menuCheck_Game"/>
   </widget>
  </widget>
  <resources/>
