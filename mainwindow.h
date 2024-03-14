@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    std::vector<std::vector<int>> ParseText(const std::string& input);
+    std::vector<std::vector<int>> ParseText(QString& input);
     Sodoku *s = new Sodoku;
 
 private slots:
@@ -34,7 +34,7 @@ private slots:
 private:
     bool isGameStarted = false;
     bool isGameComplete = false;
-    std::string fileText;
+    QString fileText;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Sodoku.h"
 
 bool CheckSubGrid(std::vector<std::vector<int>>& sodokuGrid, int GridNumber);

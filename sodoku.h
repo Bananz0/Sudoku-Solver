@@ -1,8 +1,6 @@
 #ifndef SODOKU_H
 #define SODOKU_H
 #include <vector>
-#include <iostream>
-#include <string>
 
 class Sodoku
 {

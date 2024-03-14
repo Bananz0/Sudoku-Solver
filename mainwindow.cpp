@@ -32,9 +32,8 @@ void MainWindow::on_openTextFile_clicked()
         QMessageBox::information(0,"info",sodokuText.errorString());
     }
     QTextStream sodokuTextIn(&sodokuText);
-    fileText = sodokuTextIn.readAll().toStdString();
-    QString qfileText = QString::fromStdString(fileText);
-    ui->textBrowser->setText(qfileText);
+    fileText = sodokuTextIn.readAll();
+    ui->textBrowser->setText(fileText);
 }
 
 void MainWindow::on_OpenFileDialog_clicked()
@@ -47,20 +46,18 @@ void MainWindow::on_OpenFileDialog_clicked()
         QMessageBox::information(0,"info",sodokuText.errorString());
     }
     QTextStream sodokuTextIn(&sodokuText);
-    fileText = sodokuTextIn.readAll().toStdString();
-    QString qfileText = QString::fromStdString(fileText);
-    ui->textBrowser->setText(qfileText);
+    fileText = sodokuTextIn.readAll();
+    ui->textBrowser->setText(fileText);
 
 }
 
-std::vector<std::vector<int>> MainWindow::ParseText(const std::string& input) {
+std::vector<std::vector<int>> MainWindow::ParseText(QString& input) {
     //Little help from AI and stack overflow
     std::vector<std::vector<int>> sodokuGridIn(9, std::vector<int>(9));
-
     int idx = 0;
     for (int row = 0; row < 9; row++) {
         for (int col = 0; col < 9; col++) {
-            sodokuGridIn[row][col] = input[idx] - '0';
+            sodokuGridIn[row][col] = input[idx].digitValue();;
             idx++;
         }
     }
