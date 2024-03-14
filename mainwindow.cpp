@@ -5,7 +5,6 @@
 #include <QTextStream>
 #include <QMessageBox>
 
-#include <map>
 
 // mainwindow.cpp
 MainWindow::MainWindow(QWidget *parent)
@@ -13,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setFixedSize(400,600);
+    //setFixedSize(400,600);
 }
 
 MainWindow::~MainWindow()
@@ -38,18 +37,40 @@ void MainWindow::paintEvent(QPaintEvent *event)
     //
 
     QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::TextAntialiasing);
     QPen pen;
     QFont font;
     font.setPixelSize(30);
     pen.setWidth(4);
     painter.setPen(pen);
     painter.setFont(font);
+    painter.setOpacity(.5);
+
+
+    // Calculate the available drawing area
+    int width = this->width();
+    int height = this->height();
+
+    // Calculate offsets to center the content
+    int contentWidth = 400; // Width of your drawn grid and lines
+    int contentHeight = 450; // Height of your drawn grid and lines
+    int offsetX = (width - contentWidth) / 2;
+    int offsetY = (height - contentHeight) / 2;
+
+    // Calculate scaling factors to fit content within the widget
+    double scaleX = (double)width / 400.0; // Assuming max width of content is 400
+    double scaleY = (double)height / 450.0; // Assuming max height of content is 450
+    double scale = qMin(scaleX, scaleY); // Use the smaller scaling factor
+
+    painter.translate(offsetX, offsetY);
+    painter.scale(scale, scale);
 
 
     //Line Loop
     for (int i = 0; i < 10; i++){
-        QPoint p1(0,30+i*(450/10)), p2(400,30+i*(450/10));
-        QPoint p3(+i*(450/10),32), p4(i*(450/10),432);
+        QPoint p1(0,40+i*(450/10)), p2(400,40+i*(450/10));
+        QPoint p3(+i*(450/10),42), p4(i*(450/10),442);
         painter.drawLine(p1, p2);
         painter.drawLine(p3, p4);
     }
@@ -59,13 +80,9 @@ void MainWindow::paintEvent(QPaintEvent *event)
         for (int i = 0; i < 9; i++) {
             int value = s->getValue(j,i);
             QString text = QString::number(value);
-            painter.drawText(15+i*(400/9),65+j*(400/9), text);
+            painter.drawText(15+i*(400/9),80+j*(400/9), text);
         }
     }
-
-
-
-
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent * event)
@@ -76,37 +93,36 @@ void MainWindow::mouseReleaseEvent(QMouseEvent * event)
 
 void MainWindow::on_StartGame_clicked()
 {
-    if (!isGameStarted) {
-        isGameStarted = true;
-        s->InitializeGrid();
-        s->PopulateGrid(ParseText(fileText));
-        s->PrintGrid();
-
-    }
+    // if (!isGameStarted) {
+    //     isGameStarted = true;
+    //     s->InitializeGrid();
+    //     s->PopulateGrid(ParseText(fileText));
+    //     s->PrintGrid();
+    // }
 }
 
 void MainWindow::on_openTextFile_clicked()
 {
-    //Adapted from QT4 Guides
-    QFile sodokuText(":/Sample.txt");
-    if (!sodokuText.open(QIODevice::ReadOnly)){
-        QMessageBox::information(0,"info",sodokuText.errorString());
-    }
-    QTextStream sodokuTextIn(&sodokuText);
-    fileText = sodokuTextIn.readAll();
+    // //Adapted from QT4 Guides
+    // QFile sodokuText(":/Sample.txt");
+    // if (!sodokuText.open(QIODevice::ReadOnly)){
+    //     QMessageBox::information(0,"info",sodokuText.errorString());
+    // }
+    // QTextStream sodokuTextIn(&sodokuText);
+    // fileText = sodokuTextIn.readAll();
 }
 
 void MainWindow::on_openFileDialog_clicked()
 {
-    QString sodokuTestAlt =  QFileDialog::getOpenFileName(this, tr("Open File"),
-                                                         "/home",
-                                                         tr("*.txt"));
-    QFile sodokuText(sodokuTestAlt);
-    if (!sodokuText.open(QIODevice::ReadOnly)){
-        QMessageBox::information(0,"info",sodokuText.errorString());
-    }
-    QTextStream sodokuTextIn(&sodokuText);
-    fileText = sodokuTextIn.readAll();
+    // QString sodokuTestAlt =  QFileDialog::getOpenFileName(this, tr("Open File"),
+    //                                                      "/home",
+    //                                                      tr("*.txt"));
+    // QFile sodokuText(sodokuTestAlt);
+    // if (!sodokuText.open(QIODevice::ReadOnly)){
+    //     QMessageBox::information(0,"info",sodokuText.errorString());
+    // }
+    // QTextStream sodokuTextIn(&sodokuText);
+    // fileText = sodokuTextIn.readAll();
 
 }
 
@@ -125,8 +141,13 @@ QVector<QVector<int>> MainWindow::ParseText(QString& input) {
 
 void MainWindow::on_checkGame_clicked()
 {
-    if (!isGameComplete){
-        isGameComplete= s->CheckGame();
-    }
+    // if (!isGameComplete){
+    //     isGameComplete= s->CheckGame();
+    // }
 }
 
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+    update(); // Trigger a repaint
+}

@@ -40,6 +40,7 @@ private:
     bool isGameComplete = false;
     QString fileText;
     Ui::MainWindow *ui;
+    void resizeEvent(QResizeEvent *event);
 
 protected:
     void paintEvent(QPaintEvent *event);

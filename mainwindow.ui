@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>414</width>
+    <width>455</width>
     <height>606</height>
    </rect>
   </property>
@@ -73,7 +73,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>414</width>
+     <width>455</width>
      <height>21</height>
     </rect>
    </property>
@@ -101,6 +101,17 @@
    <addaction name="menuLoad_from_Text"/>
    <addaction name="menuLoad_from_File"/>
    <addaction name="menuCheck_Game"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
   </widget>
  </widget>
  <resources/>
