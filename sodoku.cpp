@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Sodoku.h"
+#include "sodoku.h"
 
 bool CheckSubGrid(QVector<QVector<int>>& sodokuGrid, int GridNumber);
 bool CheckLines(QVector<QVector<int>>& sodokuGrid);
