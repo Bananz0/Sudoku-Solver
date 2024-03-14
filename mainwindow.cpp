@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //setFixedSize(400,600);
+    //setFixedSize(1200,800);
 }
 
 MainWindow::~MainWindow()
@@ -43,8 +43,14 @@ void MainWindow::paintEvent(QPaintEvent *event)
     QFont font;
     font.setPixelSize(30);
     pen.setWidth(4);
+
+    //PEN
     painter.setPen(pen);
+
+    //FONT (havent set yet)
     painter.setFont(font);
+
+    //OPACITY
     painter.setOpacity(.5);
 
 
@@ -67,10 +73,25 @@ void MainWindow::paintEvent(QPaintEvent *event)
     painter.scale(scale, scale);
 
 
+
     //Line Loop
     for (int i = 0; i < 10; i++){
         QPoint p1(0,40+i*(450/10)), p2(400,40+i*(450/10));
         QPoint p3(+i*(450/10),42), p4(i*(450/10),442);
+
+        //seting pen thicccness
+        pen.setWidth((i % 3 == 0) ? 6 : 4);
+        //pen coloour
+        i % 2? pen.setColor(Qt::blue) : pen.setColor(Qt::red);
+        if (i == 9) pen.setColor(Qt::black);
+        if (i == 6) pen.setColor(Qt::black);
+        if (i == 3) pen.setColor(Qt::black);
+        if (i == 0) pen.setColor(Qt::black);
+
+
+        painter.setPen(pen);
+
+
         painter.drawLine(p1, p2);
         painter.drawLine(p3, p4);
     }
@@ -79,7 +100,13 @@ void MainWindow::paintEvent(QPaintEvent *event)
     for (int j = 0; j < 9; j++) {
         for (int i = 0; i < 9; i++) {
             int value = s->getValue(j,i);
+            i % 2? painter.setPen(Qt::red) : painter.setPen(Qt::green);
             QString text = QString::number(value);
+            if (text == '9') painter.setPen(Qt::black);
+            if (text == '6') painter.setPen(Qt::black);
+            if (text == '4') painter.setPen(Qt::black);
+            if (text == '2') painter.setPen(Qt::black);
+            if (text == '0') painter.setPen(Qt::black);
             painter.drawText(15+i*(400/9),80+j*(400/9), text);
         }
     }
