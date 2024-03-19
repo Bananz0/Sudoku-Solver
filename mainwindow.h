@@ -48,6 +48,8 @@ private slots:
 
     void on_actionCredits_triggered();
 
+    void on_actionExit_Game_triggered();
+
 private:
     bool isGameStarted = false;
     bool isGameComplete = false;

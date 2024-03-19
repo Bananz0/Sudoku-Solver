@@ -5,6 +5,8 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QTimer>
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     s->InitializeGrid();
     s->PrintGrid();
     
+
     ui->setupUi(this);
     setMinimumSize(450,600);
     
@@ -126,42 +129,45 @@ void MainWindow::mouseReleaseEvent(QMouseEvent * event)
 
 void MainWindow::on_StartGame_clicked()
 {
-    qDebug() << "Game btn Clicked";
-    ui->StartGame->setText("Begin Game");
+    static bool isGameStarted = false;
+    static bool isGameComplete = false;
 
-
-    isGameComplete;
-    isGameStarted;
-
-    if (!isGameStarted){
-        isGameStarted = true;
-
+    if (!isGameStarted && !isGameComplete) {
+        // Begin Game state
         qDebug() << "Starting New Game:";
-
         s->InitializeGrid();
         s->PopulateGrid(ParseText(fileText));
-
-        update();
-
-    }
-
-    if (isGameStarted) {
-        isGameComplete = false;
-        isGameStarted = false;
-
-        qDebug() << "Checking Game Status:";
-
-        isSodokuValid = s->CheckGame();
-        isSodokuValid ? ui->StartGame->setText("Your Sodoku is Very Valid"):ui->StartGame->setText("Your Sodoku is Invalid");
-        isSodokuValid = false;
-
-
         ui->StartGame->setText("Check Game");
+        isGameStarted = true;
+        update();
+    } else if (isGameStarted && !isGameComplete) {
+        // Check Game state
+        qDebug() << "Checking Game Status:";
+        bool isSodokuValid = s->CheckGame();
+        if (isSodokuValid) {
+            ui->StartGame->setText("Your Sodoku is Valid");
+            QTimer::singleShot(1500, this, [=]() {
+                ui->StartGame->setText("Start new Game");
+            });
+            isGameComplete = true;
+        } else {
+            ui->StartGame->setText("Your Sodoku is Invalid, Start New Game.");
+            QTimer::singleShot(2500, this, [=]() {
+                ui->StartGame->setText("Start new Game");
+            });
+        }
+        update();
+    } else if (isGameComplete) {
+        // Game Complete state
+        qDebug() << "Game Complete. Starting New Game.";
+        s->InitializeGrid();
+        s->PopulateGrid(ParseText(fileText));
+        ui->StartGame->setText("Check Game");
+        isGameStarted = true;
+        isGameComplete = false;
         update();
     }
-
 }
-
 void MainWindow::on_openTextFile_clicked()
 {
     //Adapted from QT4 Guides
@@ -260,5 +266,12 @@ void MainWindow::on_actionCredits_triggered()
     QString link = "https://youtu.be/LDU_Txk06tM?si=pU71xuD08cFz5sy4&t=74";
     QDesktopServices::openUrl(QUrl(link));
 
+}
+
+
+
+void MainWindow::on_actionExit_Game_triggered()
+{
+    QApplication::closeAllWindows();
 }
 
