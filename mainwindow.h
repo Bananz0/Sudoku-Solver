@@ -9,7 +9,6 @@
 #include <QPixmap>
 #include <QWidget>
 #include <QMouseEvent>
-#include <map>
 
 
 #include "sodoku.h"
