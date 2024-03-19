@@ -31,9 +31,10 @@ public:
 
 private slots:
     void on_StartGame_clicked();
+
     void on_openTextFile_clicked();
+
     void on_openFileDialog_clicked();
-    void on_checkGame_clicked();
 
     void on_actionOpen_triggered();
 
@@ -41,15 +42,16 @@ private slots:
 
     void on_actionSolved_Game_triggered();
 
-    void on_actionSave_File_triggered();
-
     void on_actionHelp_triggered();
+
+    void on_actionSave_File_triggered();
 
     void on_actionCredits_triggered();
 
 private:
     bool isGameStarted = false;
     bool isGameComplete = false;
+    bool isSodokuValid = false;
     QString fileText;
     Ui::MainWindow *ui;
     void resizeEvent(QResizeEvent *event);

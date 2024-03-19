@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     QTimer::singleShot(2500,splash,SLOT(close()));
     QTimer::singleShot(2500,w,SLOT(show()));
 
-    w->setWindowTitle("SodokuSE: A new way to solve sodoku innefeciently!");
+    w->setWindowTitle("SodokuSE: A new way to solve sodoku ineffeciently!");
     w->setWindowIcon(icon);
 
 
