@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="StartGame">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>520</y>
+      <x>120</x>
+      <y>510</y>
       <width>80</width>
       <height>24</height>
      </rect>
@@ -27,37 +27,11 @@
      <string>Start Game</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="openTextFile">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>520</y>
-      <width>121</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Load Game from Text</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="openFileDialog">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>520</y>
-      <width>121</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Load Game from File</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="checkGame">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>520</y>
+      <x>220</x>
+      <y>510</y>
       <width>80</width>
       <height>24</height>
      </rect>
@@ -77,30 +51,40 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menunigag">
+   <widget class="QMenu" name="menuLoad_Game">
     <property name="title">
-     <string>Start</string>
+     <string>Load Game</string>
     </property>
+    <widget class="QMenu" name="menuInternal_Game">
+     <property name="title">
+      <string>Internal Game (Testing)</string>
+     </property>
+     <addaction name="actionUnsolved_Game"/>
+     <addaction name="actionSolved_Game"/>
+    </widget>
+    <addaction name="menuInternal_Game"/>
+    <addaction name="actionSave_File"/>
    </widget>
-   <widget class="QMenu" name="menuLoad_from_Text">
+   <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>Load Sample</string>
+     <string>File</string>
     </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_as"/>
+    <addaction name="actionClose_game"/>
+    <addaction name="actionExit_Game"/>
    </widget>
-   <widget class="QMenu" name="menuLoad_from_File">
+   <widget class="QMenu" name="menuAbout">
     <property name="title">
-     <string>Load from File</string>
+     <string>About</string>
     </property>
+    <addaction name="actionHelp"/>
+    <addaction name="separator"/>
+    <addaction name="actionCredits"/>
    </widget>
-   <widget class="QMenu" name="menuCheck_Game">
-    <property name="title">
-     <string>Check Game</string>
-    </property>
-   </widget>
-   <addaction name="menunigag"/>
-   <addaction name="menuLoad_from_Text"/>
-   <addaction name="menuLoad_from_File"/>
-   <addaction name="menuCheck_Game"/>
+   <addaction name="menuFile"/>
+   <addaction name="menuLoad_Game"/>
+   <addaction name="menuAbout"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -113,6 +97,51 @@
     <bool>false</bool>
    </attribute>
   </widget>
+  <action name="actionSave_File">
+   <property name="text">
+    <string>Previously Saved Game</string>
+   </property>
+  </action>
+  <action name="actionUnsolved_Game">
+   <property name="text">
+    <string>Unsolved Game</string>
+   </property>
+  </action>
+  <action name="actionSolved_Game">
+   <property name="text">
+    <string>Solved Game</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="text">
+    <string>Save As</string>
+   </property>
+  </action>
+  <action name="actionClose_game">
+   <property name="text">
+    <string>Close Game</string>
+   </property>
+  </action>
+  <action name="actionExit_Game">
+   <property name="text">
+    <string>Exit Game</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionCredits">
+   <property name="text">
+    <string>Credits</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

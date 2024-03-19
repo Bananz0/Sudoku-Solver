@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 
 // mainwindow.cpp
@@ -11,19 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    //setFixedSize(1200,800);
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-
-void MainWindow::paintEvent(QPaintEvent *event)
-{
-    //Did not want to do this here
     QFile sodokuText(":/Sample.txt");
     if (!sodokuText.open(QIODevice::ReadOnly)){
         QMessageBox::information(0,"info",sodokuText.errorString());
@@ -32,47 +20,66 @@ void MainWindow::paintEvent(QPaintEvent *event)
     fileText = sodokuTextIn.readAll();
 
     s->InitializeGrid();
-    s->PopulateGrid(ParseText(fileText));
     s->PrintGrid();
-    //
 
+    ui->setupUi(this);
+    setMinimumSize(450,600);
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setRenderHint(QPainter::TextAntialiasing);
-    QPen pen;
-    QFont font;
-    font.setPixelSize(30);
-    pen.setWidth(4);
 
     //PEN
+    QPen pen;
     painter.setPen(pen);
+    painter.setRenderHint(QPainter::TextAntialiasing);
+    pen.setWidth(4);
 
-    //FONT (havent set yet)
+    //FONT
+    QFont font;
+    font.setPixelSize(30);
+    font.setBold(1);
+    font.setFamily("Bauhaus 93");
     painter.setFont(font);
 
     //OPACITY
-    painter.setOpacity(.5);
-
+    painter.setOpacity(.9);
 
     // Calculate the available drawing area
     int width = this->width();
     int height = this->height();
 
     // Calculate offsets to center the content
-    int contentWidth = 400; // Width of your drawn grid and lines
+    int contentWidth = 442; // Width of your drawn grid and lines
     int contentHeight = 450; // Height of your drawn grid and lines
-    int offsetX = (width - contentWidth) / 2;
-    int offsetY = (height - contentHeight) / 2;
+
+
+    // Calculate the center points of the widget and the content
+    int centerX = width / 2;
+    int centerY = height / 2;
+    int contentCenterX = contentWidth / 2;
+    int contentCenterY = contentHeight / 2;
+    int offsetX = centerX - contentCenterX;
+    int offsetY = centerY - contentCenterY;
 
     // Calculate scaling factors to fit content within the widget
-    double scaleX = (double)width / 400.0; // Assuming max width of content is 400
-    double scaleY = (double)height / 450.0; // Assuming max height of content is 450
-    double scale = qMin(scaleX, scaleY); // Use the smaller scaling factor
+    double scaleX = (double)width / contentWidth;
+    double scaleY = (double)height / contentHeight;
+    double scale = qMin(scaleX, scaleY);
 
-    painter.translate(offsetX, offsetY);
+
+    painter.translate(offsetX + 10 , offsetY - 50);
     painter.scale(scale, scale);
 
-
+    //painter.translate(-contentCenterX, -contentCenterY);
 
     //Line Loop
     for (int i = 0; i < 10; i++){
@@ -106,7 +113,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
             if (text == '6') painter.setPen(Qt::black);
             if (text == '4') painter.setPen(Qt::black);
             if (text == '2') painter.setPen(Qt::black);
-            if (text == '0') painter.setPen(Qt::black);
+            if (text == '0') painter.setPen(Qt::darkYellow);
             painter.drawText(15+i*(400/9),80+j*(400/9), text);
         }
     }
@@ -120,37 +127,39 @@ void MainWindow::mouseReleaseEvent(QMouseEvent * event)
 
 void MainWindow::on_StartGame_clicked()
 {
-    // if (!isGameStarted) {
-    //     isGameStarted = true;
-    //     s->InitializeGrid();
-    //     s->PopulateGrid(ParseText(fileText));
-    //     s->PrintGrid();
-    // }
+    qDebug() << "StartGame Clicked";
+    if (!isGameStarted) {
+        isGameComplete = false;
+        isGameStarted = true;
+        s->InitializeGrid();
+        s->PopulateGrid(ParseText(fileText));
+        s->PrintGrid();
+        update();
+    }
 }
 
 void MainWindow::on_openTextFile_clicked()
 {
-    // //Adapted from QT4 Guides
-    // QFile sodokuText(":/Sample.txt");
-    // if (!sodokuText.open(QIODevice::ReadOnly)){
-    //     QMessageBox::information(0,"info",sodokuText.errorString());
-    // }
-    // QTextStream sodokuTextIn(&sodokuText);
-    // fileText = sodokuTextIn.readAll();
+    //Adapted from QT4 Guides
+    QFile sodokuText(":/Sample.txt");
+    if (!sodokuText.open(QIODevice::ReadOnly)){
+        QMessageBox::information(0,"info",sodokuText.errorString());
+    }
+    QTextStream sodokuTextIn(&sodokuText);
+    fileText = sodokuTextIn.readAll();
 }
 
 void MainWindow::on_openFileDialog_clicked()
 {
-    // QString sodokuTestAlt =  QFileDialog::getOpenFileName(this, tr("Open File"),
-    //                                                      "/home",
-    //                                                      tr("*.txt"));
-    // QFile sodokuText(sodokuTestAlt);
-    // if (!sodokuText.open(QIODevice::ReadOnly)){
-    //     QMessageBox::information(0,"info",sodokuText.errorString());
-    // }
-    // QTextStream sodokuTextIn(&sodokuText);
-    // fileText = sodokuTextIn.readAll();
-
+    QString sodokuTestAlt =  QFileDialog::getOpenFileName(this, tr("Open File"),
+                                                         "/home",
+                                                         tr("*.txt"));
+    QFile sodokuText(sodokuTestAlt);
+    if (!sodokuText.open(QIODevice::ReadOnly)){
+        QMessageBox::information(0,"info",sodokuText.errorString());
+    }
+    QTextStream sodokuTextIn(&sodokuText);
+    fileText = sodokuTextIn.readAll();
 }
 
 QVector<QVector<int>> MainWindow::ParseText(QString& input) {
@@ -168,9 +177,10 @@ QVector<QVector<int>> MainWindow::ParseText(QString& input) {
 
 void MainWindow::on_checkGame_clicked()
 {
-    // if (!isGameComplete){
-    //     isGameComplete= s->CheckGame();
-    // }
+    if (!isGameComplete){
+        isGameStarted = false;
+        isGameComplete = s->CheckGame();
+    }
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -178,3 +188,66 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     Q_UNUSED(event);
     update(); // Trigger a repaint
 }
+
+void MainWindow::on_actionOpen_triggered()
+{
+    //Adapted from QT4 Guides
+    QFile sodokuText(":/Sample.txt");
+    if (!sodokuText.open(QIODevice::ReadOnly)){
+        QMessageBox::information(0,"info",sodokuText.errorString());
+    }
+    QTextStream sodokuTextIn(&sodokuText);
+    fileText = sodokuTextIn.readAll();
+}
+
+
+void MainWindow::on_actionUnsolved_Game_triggered()
+{
+    //Adapted from QT4 Guides
+    QFile sodokuText(":/Sample_unsolved.txt");
+    if (!sodokuText.open(QIODevice::ReadOnly)){
+        QMessageBox::information(0,"info",sodokuText.errorString());
+    }
+    QTextStream sodokuTextIn(&sodokuText);
+    fileText = sodokuTextIn.readAll();
+}
+
+
+void MainWindow::on_actionSolved_Game_triggered()
+{
+    //Adapted from QT4 Guides
+    QFile sodokuText(":/Sample.txt");
+    if (!sodokuText.open(QIODevice::ReadOnly)){
+        QMessageBox::information(0,"info",sodokuText.errorString());
+    }
+    QTextStream sodokuTextIn(&sodokuText);
+    fileText = sodokuTextIn.readAll();
+}
+
+
+void MainWindow::on_actionSave_File_triggered()
+{
+    //Adapted from QT4 Guides
+    QFile sodokuText(":/saved_game.txt");
+    if (!sodokuText.open(QIODevice::ReadOnly)){
+        QMessageBox::information(0,"info",sodokuText.errorString());
+    }
+    QTextStream sodokuTextIn(&sodokuText);
+    fileText = sodokuTextIn.readAll();
+}
+
+
+void MainWindow::on_actionHelp_triggered()
+{
+    QString link = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    QDesktopServices::openUrl(QUrl(link));
+}
+
+
+void MainWindow::on_actionCredits_triggered()
+{
+    QString link = "https://youtu.be/LDU_Txk06tM?si=pU71xuD08cFz5sy4&t=74";
+    QDesktopServices::openUrl(QUrl(link));
+
+}
+

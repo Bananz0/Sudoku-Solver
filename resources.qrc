@@ -3,5 +3,7 @@
         <file>assets/icon.png</file>
         <file>assets/splash.png</file>
         <file>Sample.txt</file>
+        <file>Sample_unsolved.txt</file>
+        <file>saved_game.txt</file>
     </qresource>
 </RCC>
