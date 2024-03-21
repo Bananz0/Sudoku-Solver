@@ -6,7 +6,7 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QTimer>
-#include <QGridLayout>
+// #include <QGridLayout>
 
 
 
@@ -101,7 +101,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     double scale = qMin(scaleX, scaleY);
 
 
-    painter.translate(offsetX + 10 , offsetY - 50);
+    painter.translate(offsetX + 15 , offsetY - 50);
     painter.scale(scale, scale);
 
     //painter.translate(-contentCenterX, -contentCenterY);
@@ -109,7 +109,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     //Line Loop
     for (int i = 0; i < 10; i++){
         QPoint p1(0,40+i*(450/10)), p2(400,40+i*(450/10));
-        QPoint p3(+i*(450/10),42), p4(i*(450/10),442);
+        QPoint p3(i*(450/10),42), p4(i*(450/10),442);
 
         //seting pen thicccness
         pen.setWidth((i % 3 == 0) ? 6 : 4);
@@ -122,17 +122,14 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
 
         painter.setPen(pen);
-
-
         painter.drawLine(p1, p2);
         painter.drawLine(p3, p4);
     }
 
-    //Grid Loop
     for (int j = 0; j < 9; j++) {
         for (int i = 0; i < 9; i++) {
-            int value = s->getValue(j,i);
-            i % 2? painter.setPen(Qt::red) : painter.setPen(Qt::green);
+            int value = s->getValue(j, i);
+            i % 2 ? painter.setPen(Qt::red) : painter.setPen(Qt::green);
             QString text = QString::number(value);
             if (text == '9') painter.setPen(Qt::black);
             if (text == '6') painter.setPen(Qt::black);
@@ -140,21 +137,51 @@ void MainWindow::paintEvent(QPaintEvent *event)
             if (text == '2') painter.setPen(Qt::black);
 
 
+            QRect cellRect(15 + i * (400 / 9), 80 + j * (400 / 9), 50, 20);
+            if (cellRect.contains(clickedPos)) {
+                text = QString::number(clickedValue);
+            }
+
             if (text == '0') {
                 painter.setPen(Qt::darkYellow);
-
             } else {
-                painter.drawText(15+i*(400/9),80+j*(400/9), text);
-
+                painter.drawText(15 + i * (400 / 9), 80 + j * (400 / 9), text);
             }
         }
     }
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent * event)
+
+// In mainwindow.cpp
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    // get click position
+    // Get click position
+    clickedPos = event->pos();
     qDebug() << "Mouse x " << event->position() << " Mouse y " << event->position();
+
+    // Find the clicked cell
+    int row = -1, col = -1;
+    for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < 9; i++) {
+            QRect cellRect(15 + i * (400 / 9), 80 + j * (400 / 9), 50, 20);
+            if (cellRect.contains(clickedPos)) {
+                row = j;
+                col = i;
+                break;
+            }
+        }
+        if (row != -1 && col != -1) break;
+    }
+
+    // If a cell was clicked, increment the clickedValue and update the grid value
+    if (row != -1 && col != -1) {
+        clickedValue = (clickedValue % 9) + 1;
+        s->setValue(row, col, clickedValue);
+    }
+
+    s->PrintGrid();
+
+    update(); // Trigger a repaint
 }
 
 void MainWindow::on_StartGame_clicked()
@@ -210,7 +237,7 @@ void MainWindow::on_openTextFile_clicked()
     fileText = sodokuTextIn.readAll();
 }
 
-void MainWindow::on_openFileDialog_clicked()
+void MainWindow::on_actionFrom_File_triggered()
 {
     QString sodokuTestAlt =  QFileDialog::getOpenFileName(this, tr("Open File"),
                                                          "/home",
@@ -221,6 +248,9 @@ void MainWindow::on_openFileDialog_clicked()
     }
     QTextStream sodokuTextIn(&sodokuText);
     fileText = sodokuTextIn.readAll();
+}
+void MainWindow::on_openFileDialog_clicked()
+{
 }
 
 QVector<QVector<int>> MainWindow::ParseText(QString& input) {
@@ -277,13 +307,7 @@ void MainWindow::on_actionSolved_Game_triggered()
 
 void MainWindow::on_actionSave_File_triggered()
 {
-    //Adapted from QT4 Guides
-    QFile sodokuText(":/saved_game.txt");
-    if (!sodokuText.open(QIODevice::ReadOnly)){
-        QMessageBox::information(0,"info",sodokuText.errorString());
-    }
-    QTextStream sodokuTextIn(&sodokuText);
-    fileText = sodokuTextIn.readAll();
+
 }
 
 void MainWindow::on_actionHelp_triggered()
@@ -303,3 +327,32 @@ void MainWindow::on_actionExit_Game_triggered()
 {
     QApplication::closeAllWindows();
 }
+
+void MainWindow::on_actionSave_triggered()
+{
+    on_actionSave_as_triggered();
+}
+
+
+void MainWindow::on_actionSave_as_triggered()
+{
+    QString sodokuTestAlt =  QFileDialog::getSaveFileName(this, tr("Open File"),
+                                                         "/home",
+                                                         tr("*.txt"));
+    QFile sodokuText(sodokuTestAlt);
+    if (!sodokuText.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Error", "Failed to open file for writing: " + sodokuText.errorString());
+        return;
+    }
+
+    QTextStream out(&sodokuText);
+    for (int row = 0; row < 9; ++row) {
+        for (int col = 0; col < 9; ++col) {
+            out << s->getValue(row, col);
+        }
+    }
+
+    sodokuText.close();
+}
+
+

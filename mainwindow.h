@@ -49,6 +49,12 @@ private slots:
 
     void on_actionExit_Game_triggered();
 
+    void on_actionSave_triggered();
+
+    void on_actionSave_as_triggered();
+
+    void on_actionFrom_File_triggered();
+
 private:
     bool isGameStarted = false;
     bool isGameComplete = false;
@@ -56,6 +62,8 @@ private:
     QString fileText;
     Ui::MainWindow *ui;
     void resizeEvent(QResizeEvent *event);
+    QPoint clickedPos;
+    int clickedValue = 0;
 
 protected:
     void paintEvent(QPaintEvent *event);

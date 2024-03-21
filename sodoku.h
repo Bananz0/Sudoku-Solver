@@ -18,6 +18,7 @@ public:
     int getValue(int a,int b);
     void PrintGrid();
     bool CheckGame();
+    void setValue(int a, int b, int valIn);
 };
 
 

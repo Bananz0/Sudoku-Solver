@@ -68,3 +68,7 @@ QVector<QVector<int>> Sodoku::getGrid() {
 int Sodoku::getValue(int a, int b){
     return sodokuGrid[a][b];
 }
+
+void Sodoku::setValue(int a, int b, int valIn){
+    sodokuGrid[a][b] = valIn;
+}

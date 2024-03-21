@@ -6,27 +6,29 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>610</height>
+    <width>491</width>
+    <height>606</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwiget">
-   <widget class="QPushButton" name="StartGame">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>490</y>
-      <width>321</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start Game</string>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="5">
+     <widget class="QLineEdit" name="11"/>
+    </item>
+    <item row="0" column="5">
+     <widget class="QLineEdit" name="21"/>
+    </item>
+    <item row="10" column="5">
+     <widget class="QPushButton" name="StartGame">
+      <property name="text">
+       <string>Start Game</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
@@ -34,7 +36,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>480</width>
+     <width>491</width>
      <height>21</height>
     </rect>
    </property>
@@ -51,7 +53,6 @@
     </widget>
     <addaction name="menuInternal_Game"/>
     <addaction name="actionSave_File"/>
-    <addaction name="actionFrom_File"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -59,6 +60,7 @@
     </property>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
+    <addaction name="actionClose_game"/>
     <addaction name="actionExit_Game"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
@@ -124,6 +126,14 @@
     <string>Save As</string>
    </property>
   </action>
+  <action name="actionClose_game">
+   <property name="text">
+    <string>Close Game</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
+  </action>
   <action name="actionExit_Game">
    <property name="icon">
     <iconset theme="application-exit"/>
@@ -143,11 +153,6 @@
   <action name="actionCredits">
    <property name="text">
     <string>Credits</string>
-   </property>
-  </action>
-  <action name="actionFrom_File">
-   <property name="text">
-    <string>From File</string>
    </property>
   </action>
  </widget>
