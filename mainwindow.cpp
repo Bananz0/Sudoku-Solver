@@ -179,55 +179,48 @@ void MainWindow::on_StartGame_clicked()
         if (isSodokuValid) {
             ui->StartGame->setText("Your Sodoku is Valid");
 
-            QTimer::singleShot(2500, this, [=]() {});
+            QTimer::singleShot(2500, this, [=]() {
+                // TRANSMIT THROUGH Pions //
+                wiringPiSetup();
+
+                //Set Pin 0 as output to signal start
+                ui->StartGame->setText("Transmitting data over pin 1");
+                qDebug() << "Initiating handshake";
+
+                pinMode(0, OUTPUT);
+                for (int i = 0; i < 5 ; i++){
+                    digitalWrite(0, HIGH); delay(500) ;
+                    digitalWrite(0, LOW); delay(500);
+                }
+
+
+
+                //Transmit data through pin1 //Stub funtion
+                pinMode(1, OUTPUT);
+
+                for (int j = 0; j < 9 ; j++){
+                    for (int i=0; i < 9; i++){
+                        for (int z = 0; i < s->getValue(j,i) ; z++){
+                            digitalWrite(0, HIGH); delay(500) ;
+                            digitalWrite(0, LOW); delay(500);
+                        }
+                        qDebug() << "Sent " << s->getValue(i,j) << " over pin 1";
+                    }
+                }
+
+                //Set Pin2 as output to signal end
+                qDebug() << "Finalizing transfer";
+                pinMode(2, OUTPUT);
+                for (int i = 0; i < 5 ; i++){
+                    digitalWrite(0, HIGH); delay(500) ;
+                    digitalWrite(0, LOW); delay(500);
+                }
+                ui->StartGame->setText("Transfer Complete!");
+                qDebug() << "Transfer Complete";
+            });
 
             isGameComplete = true;
 
-
-            // TRANSMIT THROUGH Pions //
-            wiringPiSetup();
-
-            //Set Pin 0 as output to signal start
-            ui->StartGame->setText("Transmitting data over pin 1");
-            qDebug() << "Initiating handshake";
-
-            pinMode(0, OUTPUT);
-            for (int i = 0; i < 5 ; i++){
-                digitalWrite(0, HIGH); delay(500) ;
-                digitalWrite(0, LOW); delay(500);
-            }
-
-
-             QTimer::singleShot(1500, this, [=]() {});
-            //Transmit data through pin1 //Stub funtion
-            pinMode(1, OUTPUT);
-
-            for (int i = 0; i < 9 ; i++){
-                for (int j=0; j < 9; i++){
-                    for (int z = 0; i < s->getValue(i,j) ; i++){
-                        digitalWrite(0, HIGH); delay(500) ;
-                        digitalWrite(0, LOW); delay(500);
-                    }
-                    qDebug() << "Sent " << s->getValue(i,j) << " over pin 1";
-                }
-            }
-
-
-             QTimer::singleShot(1500, this, [=]() {});
-
-
-
-            //Set Pin2 as output to signal end
-            qDebug() << "Finalizing transfer";
-            pinMode(2, OUTPUT);
-            for (int i = 0; i < 5 ; i++){
-                digitalWrite(0, HIGH); delay(500) ;
-                digitalWrite(0, LOW); delay(500);
-            }
-            ui->StartGame->setText("Transfer Complete!");
-            qDebug() << "Transfer Complete";
-
-            QTimer::singleShot(1500, this, [=]() {});
             isGameComplete= false;
             isGameStarted = false;
             QTimer::singleShot(1500, this, [=]() {
