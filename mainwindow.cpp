@@ -195,22 +195,38 @@ void MainWindow::on_StartGame_clicked()
 
 
 
-                //Transmit data through pin1 //Stub funtion
-                pinMode(1, OUTPUT);
-
                 for (int j = 0; j < 9 ; j++){
+                    qDebug() << "Transmitting Grid - Vertical: " << j <<" to pin 2" ;
+                    pinMode(2, OUTPUT);
+
+                    for (int a = 0; a < j ; a++){
+                        digitalWrite(0, HIGH); delay(50) ;
+                        digitalWrite(0, LOW); delay(50);
+                    }
+
+
                     for (int i=0; i < 9; i++){
-                        for (int z = 0; z < s->getValue(j,i) ; z++){
+                        qDebug() << "Transmitting Grid - Horizontal: " << i <<" to pin 3" ;
+                        pinMode(3, OUTPUT);
+
+                        for (int b = 0; b < j ; b++){
                             digitalWrite(0, HIGH); delay(50) ;
                             digitalWrite(0, LOW); delay(50);
                         }
-                        qDebug() << "Sent " << s->getValue(i,j) << " over pin 1";
+
+
+                        for (int z = 0; z < s->getValue(j,i) ; z++){
+                            pinMode(4, OUTPUT);
+                            digitalWrite(0, HIGH); delay(50) ;
+                            digitalWrite(0, LOW); delay(50);
+                        }
+                        qDebug() << "Sent " << s->getValue(j,i) << " over pin 4";
                     }
                 }
 
-                //Set Pin2 as output to signal end
+                //Set Pin5 as output to signal end
                 qDebug() << "Finalizing transfer";
-                pinMode(2, OUTPUT);
+                pinMode(5, OUTPUT);
                 for (int i = 0; i < 5 ; i++){
                     digitalWrite(0, HIGH); delay(500) ;
                     digitalWrite(0, LOW); delay(500);
