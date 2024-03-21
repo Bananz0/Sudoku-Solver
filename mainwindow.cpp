@@ -203,7 +203,7 @@ void MainWindow::on_StartGame_clicked()
             pinMode(1, OUTPUT);
 
             for (int i = 0; i < 9 ; i++){
-                for (int i=0; i < 9; i++){
+                for (int j=0; j < 9; i++){
                     for (int z = 0; i < s->getValue(i,j) ; i++){
                         digitalWrite(0, HIGH); delay(500) ;
                         digitalWrite(0, LOW); delay(500);
