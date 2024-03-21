@@ -6,9 +6,7 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QTimer>
-// #include <QGridLayout>
-
-
+#include <wiringPi.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -27,29 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     setMinimumSize(450,600);
-
-
-
-
-    // QGridLayout *layout = new QGridLayout(this);
-    // //Grid Loop
-    // for (int j = 0; j < 9; j++) {
-    //     for (int i = 0; i < 9; i++) {
-    //         int value = s->getValue(j,i);
-
-    //         if (value == 0) {
-    //             QLineEdit *lineEdit = new QLineEdit(this);
-    //             lineEdit->setGeometry(QRect(15+i*(400/9),80+j*(400/9),50,20));
-    //             lineEdit->show();
-    //         }
-    //     }
-    // }
-
-
-
-    // this->setLayout(layout);
-
-
 }
 
 MainWindow::~MainWindow()
@@ -203,11 +178,66 @@ void MainWindow::on_StartGame_clicked()
         bool isSodokuValid = s->CheckGame();
         if (isSodokuValid) {
             ui->StartGame->setText("Your Sodoku is Valid");
+
+            QTimer::singleShot(2500, this, [=]() {});
+
+            isGameComplete = true;
+
+
+            // TRANSMIT THROUGH Pions //
+            wiringPiSetup();
+
+            //Set Pin 0 as output to signal start
+            ui->StartGame->setText("Transmitting data over pin 1");
+            qDebug() << "Initiating handshake";
+
+            pinMode(0, OUTPUT);
+            for (int i = 0; i < 5 ; i++){
+                digitalWrite(0, HIGH); delay(500) ;
+                digitalWrite(0, LOW); delay(500);
+            }
+
+
+             QTimer::singleShot(1500, this, [=]() {});
+            //Transmit data through pin1 //Stub funtion
+            pinMode(1, OUTPUT);
+
+            for (int i = 0; i < 9 ; i++){
+                for (int i=0; i < 9; i++){
+                    for (int z = 0; i < s->getValue(i,j) ; i++){
+                        digitalWrite(0, HIGH); delay(500) ;
+                        digitalWrite(0, LOW); delay(500);
+                    }
+                    qDebug() << "Sent " << s->getValue(i,j) << " over pin 1";
+                }
+            }
+
+
+             QTimer::singleShot(1500, this, [=]() {});
+
+
+
+            //Set Pin2 as output to signal end
+            qDebug() << "Finalizing transfer";
+            pinMode(2, OUTPUT);
+            for (int i = 0; i < 5 ; i++){
+                digitalWrite(0, HIGH); delay(500) ;
+                digitalWrite(0, LOW); delay(500);
+            }
+            ui->StartGame->setText("Transfer Complete!");
+            qDebug() << "Transfer Complete";
+
+            QTimer::singleShot(1500, this, [=]() {});
+            isGameComplete= false;
+            isGameStarted = false;
             QTimer::singleShot(1500, this, [=]() {
                 ui->StartGame->setText("Start new Game");
             });
-            isGameComplete = true;
+
+
         } else {
+            isGameComplete = false;
+            isGameStarted = false;
             ui->StartGame->setText("Your Sodoku is Invalid, Start New Game.");
             QTimer::singleShot(2500, this, [=]() {
                 ui->StartGame->setText("Start new Game");
