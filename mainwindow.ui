@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="StartGame">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>490</y>
+      <x>80</x>
+      <y>470</y>
       <width>321</width>
       <height>41</height>
      </rect>
@@ -35,7 +35,7 @@
      <x>0</x>
      <y>0</y>
      <width>480</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuLoad_Game">
@@ -86,7 +86,8 @@
   </widget>
   <action name="actionSave_File">
    <property name="icon">
-    <iconset theme="document-open-recent"/>
+    <iconset theme="document-open-recent">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Previously Saved Game</string>
@@ -94,7 +95,8 @@
   </action>
   <action name="actionUnsolved_Game">
    <property name="icon">
-    <iconset theme="document-open"/>
+    <iconset theme="document-open">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Unsolved Game</string>
@@ -102,7 +104,8 @@
   </action>
   <action name="actionSolved_Game">
    <property name="icon">
-    <iconset theme="document-open"/>
+    <iconset theme="document-open">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Solved Game</string>
@@ -110,7 +113,8 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset theme="document-save"/>
+    <iconset theme="document-save">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -118,7 +122,8 @@
   </action>
   <action name="actionSave_as">
    <property name="icon">
-    <iconset theme="document-save-as"/>
+    <iconset theme="document-save-as">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Save As</string>
@@ -126,7 +131,8 @@
   </action>
   <action name="actionExit_Game">
    <property name="icon">
-    <iconset theme="application-exit"/>
+    <iconset theme="application-exit">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Exit Game</string>
