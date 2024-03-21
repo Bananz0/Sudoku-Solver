@@ -200,7 +200,7 @@ void MainWindow::on_StartGame_clicked()
 
                 for (int j = 0; j < 9 ; j++){
                     for (int i=0; i < 9; i++){
-                        for (int z = 0; i < s->getValue(j,i) ; z++){
+                        for (int z = 0; z < s->getValue(j,i) ; z++){
                             digitalWrite(0, HIGH); delay(500) ;
                             digitalWrite(0, LOW); delay(500);
                         }
