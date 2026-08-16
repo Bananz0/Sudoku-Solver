@@ -8,6 +8,12 @@
 #include <QTimer>
 #include <wiringPi.h>
 
+#define HANDSHAKE_DELAY 500
+#define DATA_TRANSFER_DELAY 10
+#define DATA_SIG_END 15
+
+int data_pin = 0;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -184,36 +190,66 @@ void MainWindow::on_StartGame_clicked()
                 wiringPiSetup();
 
                 //Set Pin 0 as output to signal start
-                ui->StartGame->setText("Transmitting data over pin 1");
+                data_pin = 1;
+                pinMode(data_pin, OUTPUT);
+
+                ui->StartGame->setText("Transmitting data over pins");
                 qDebug() << "Initiating handshake";
 
-                pinMode(0, OUTPUT);
+
                 for (int i = 0; i < 5 ; i++){
-                    digitalWrite(0, HIGH); delay(500) ;
-                    digitalWrite(0, LOW); delay(500);
+                    digitalWrite(data_pin, HIGH); delay(HANDSHAKE_DELAY) ;
+                    digitalWrite(data_pin, LOW); delay(HANDSHAKE_DELAY);
                 }
 
 
-
-                //Transmit data through pin1 //Stub funtion
-                pinMode(1, OUTPUT);
+                data_pin = 2;
+                pinMode(data_pin, OUTPUT);
 
                 for (int j = 0; j < 9 ; j++){
+                    qDebug() << "Transmitting Grid - Vertical: " << j <<" to pin " << data_pin ;
+
+
+                    for (int a = 0; a < j ; a++){
+                        digitalWrite(data_pin, HIGH); delay(DATA_TRANSFER_DELAY) ;
+                        digitalWrite(data_pin, LOW); delay(DATA_TRANSFER_DELAY);
+                    }
+
+                    data_pin = 3;
                     for (int i=0; i < 9; i++){
-                        for (int z = 0; z < s->getValue(j,i) ; z++){
-                            digitalWrite(0, HIGH); delay(500) ;
-                            digitalWrite(0, LOW); delay(500);
+                        qDebug() << "Transmitting Grid - Horizontal: " << i <<" to pin " << data_pin;
+                        pinMode(data_pin, OUTPUT);
+
+                        for (int b = 0; b < j ; b++){
+                            digitalWrite(data_pin, HIGH); delay(DATA_TRANSFER_DELAY) ;
+                            digitalWrite(data_pin, LOW); delay(DATA_TRANSFER_DELAY);
                         }
-                        qDebug() << "Sent " << s->getValue(i,j) << " over pin 1";
+
+                        data_pin = 4;
+                        pinMode(data_pin, OUTPUT);
+                        for (int z = 0; z < s->getValue(j,i) ; z++){
+
+                            digitalWrite(data_pin, HIGH); delay(DATA_TRANSFER_DELAY) ;
+                            digitalWrite(data_pin, LOW); delay(DATA_TRANSFER_DELAY);
+                        }
+                        qDebug() << "Sent " << s->getValue(j,i) << " over pin " << data_pin;
+
+                        //Signal end digit
+                        data_pin = 5;
+                        pinMode(data_pin, OUTPUT);
+                        digitalWrite(data_pin, HIGH); delay(DATA_SIG_END) ;
+                        digitalWrite(data_pin, LOW); delay(DATA_SIG_END);
+
                     }
                 }
 
-                //Set Pin2 as output to signal end
+                //Set Pin6 as output to signal end
+                data_pin = 6;
                 qDebug() << "Finalizing transfer";
-                pinMode(2, OUTPUT);
+                pinMode(data_pin, OUTPUT);
                 for (int i = 0; i < 5 ; i++){
-                    digitalWrite(0, HIGH); delay(500) ;
-                    digitalWrite(0, LOW); delay(500);
+                    digitalWrite(data_pin, HIGH); delay(HANDSHAKE_DELAY);
+                    digitalWrite(data_pin, LOW); delay(HANDSHAKE_DELAY);
                 }
                 ui->StartGame->setText("Transfer Complete!");
                 qDebug() << "Transfer Complete";
@@ -263,8 +299,8 @@ void MainWindow::on_openTextFile_clicked()
 void MainWindow::on_actionFrom_File_triggered()
 {
     QString sodokuTestAlt =  QFileDialog::getOpenFileName(this, tr("Open File"),
-                                                         "/home",
-                                                         tr("*.txt"));
+                                                          "/home",
+                                                          tr("*.txt"));
     QFile sodokuText(sodokuTestAlt);
     if (!sodokuText.open(QIODevice::ReadOnly)){
         QMessageBox::information(0,"info",sodokuText.errorString());
@@ -360,8 +396,8 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionSave_as_triggered()
 {
     QString sodokuTestAlt =  QFileDialog::getSaveFileName(this, tr("Open File"),
-                                                         "/home",
-                                                         tr("*.txt"));
+                                                          "/home",
+                                                          tr("*.txt"));
     QFile sodokuText(sodokuTestAlt);
     if (!sodokuText.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::warning(this, "Error", "Failed to open file for writing: " + sodokuText.errorString());
