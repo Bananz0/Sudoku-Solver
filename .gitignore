@@ -72,3 +72,11 @@ CMakeLists.txt.user*
 *.dll
 *.exe
 
+
+# IDE/build junk
+.vs/
+.idea/
+cmake-build-debug/
+out/
+x64/
+CMakeUserPresets.json

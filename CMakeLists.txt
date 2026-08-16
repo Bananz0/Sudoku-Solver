@@ -47,7 +47,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(P6 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets wiringPi)
+target_link_libraries(P6 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
